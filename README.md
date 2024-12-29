@@ -1,3 +1,40 @@
+# Notes App Frontend
+
+This is the frontend of the **Notes App**, a simple full-stack application for creating, viewing, updating, and deleting notes. The frontend is built with **React** and deployed on **Netlify**.
+
+---
+
+## **Features**
+- Create new notes with a title and content.
+- View a list of all notes.
+- Edit existing notes.
+- Delete notes.
+
+---
+
+## **Tech Stack**
+- **Frontend Framework**: React
+- **HTTP Client**: Axios
+- **Deployment**: Netlify
+
+---
+
+## **Live Demo**
+Access the live frontend here: [Notes App Frontend](https://your-netlify-deployed-url.netlify.app)
+
+---
+
+## **Getting Started**
+
+### **1. Prerequisites**
+- Node.js and npm installed. [Download here](https://nodejs.org/)
+
+### **2. Clone the Repository**
+```bash
+git clone https://github.com/your-username/notesapp-frontend.git
+cd notesapp-frontend
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
