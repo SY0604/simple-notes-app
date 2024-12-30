@@ -1,48 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { getNotes, createNote, updateNote, deleteNote } from './api/api';
 import NoteForm from './components/NoteForm';
 import NoteList from './components/NoteList';
 
 function App() {
-  const [notes, setNotes] = useState([]);
+  const localStorageKey = 'notesAppNotes';
+
+  // Load notes from local storage or use default
+  const loadNotes = () => {
+    const storedNotes = localStorage.getItem(localStorageKey);
+    return storedNotes ? JSON.parse(storedNotes) : [];
+  };
+
+  const [notes, setNotes] = useState(loadNotes());
   const [currentNote, setCurrentNote] = useState(null);
 
+  // Save notes to local storage whenever they change
   useEffect(() => {
-    fetchNotes();
-  }, []);
+    localStorage.setItem(localStorageKey, JSON.stringify(notes));
+  }, [notes]);
 
-  const fetchNotes = async () => {
-    try {
-      const response = await getNotes();
-      setNotes(response.data);
-    } catch (error) {
-      console.error('Error fetching notes:', error);
+  const handleCreateOrUpdateNote = (note) => {
+    if (note.id) {
+      // Update existing note
+      setNotes((prevNotes) =>
+          prevNotes.map((n) => (n.id === note.id ? note : n))
+      );
+    } else {
+      // Create new note
+      const newNote = { ...note, id: Date.now() };
+      setNotes((prevNotes) => [...prevNotes, newNote]);
     }
+    setCurrentNote(null);
   };
 
-  const handleCreateOrUpdateNote = async (note) => {
-    console.log('Note being saved:', note); // Debug log
-    try {
-      if (note.id) {
-        await updateNote(note.id, note);
-      } else {
-        await createNote(note);
-      }
-      fetchNotes();
-      setCurrentNote(null);
-    } catch (error) {
-      console.error('Error saving note:', error);
-    }
-  };
-
-  const handleDeleteNote = async (id) => {
-    try {
-      await deleteNote(id);
-      fetchNotes();
-    } catch (error) {
-      console.error('Error deleting note:', error);
-    }
+  const handleDeleteNote = (id) => {
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
   };
 
   const handleEditNote = (note) => {
